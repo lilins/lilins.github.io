@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="hexo,github,config," />
 
 
 
@@ -90,12 +90,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="巴山夜雨">
-<meta property="og:url" content="https://lilins.github.io/index.html">
+<meta name="description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
+<meta name="keywords" content="hexo,github,config">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo部署github遇到的坑">
+<meta property="og:url" content="https://lilins.github.io/2017/05/05/Hexo部署github遇到的坑/index.html">
 <meta property="og:site_name" content="巴山夜雨">
+<meta property="og:description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
+<meta property="og:updated_time" content="2017-05-05T16:15:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="巴山夜雨">
+<meta name="twitter:title" content="Hexo部署github遇到的坑">
+<meta name="twitter:description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://lilins.github.io/"/>
+  <link rel="canonical" href="https://lilins.github.io/2017/05/05/Hexo部署github遇到的坑/"/>
 
 
 
 
 
-  <title>巴山夜雨</title>
+  <title>Hexo部署github遇到的坑 | 巴山夜雨</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -154,9 +159,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -239,9 +242,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -267,9 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/05/Hexo部署github遇到的坑/" itemprop="url">Hexo部署github遇到的坑</a></h1>
+          <h1 class="post-title" itemprop="name headline">Hexo部署github遇到的坑</h1>
         
 
         <div class="post-meta">
@@ -316,290 +317,90 @@
       
 
       
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>最近在玩Hexo的时候发现，如果使用 <code>Hexo d</code> 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。</p>
+<p>如果你只有一个git账号的话，那么</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"yourname"</span></div><div class="line">git config --global user.email <span class="string">"you@emali.com"</span></div></pre></td></tr></table></figure>
+<p>这样设置是理所当然的，但如果我是多账户（个人一个，公司一个）那就会出现问题。如果当你没有设置单独的用户名，那么就会按照你的全局设置提交。</p>
+<p>所以这个时候需要你单独设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> <span class="comment"># 这样单独设置好的用户名和邮箱，会把全局的设置覆盖</span></div><div class="line">git config user.name <span class="string">"yourname"</span></div><div class="line">git config user.email <span class="string">"you@emali.com"</span></div><div class="line"></div><div class="line"> <span class="comment"># 输入以下指令可以查看git的name</span></div><div class="line">git config name</div><div class="line"> <span class="comment"># 输入以下指令可以查看git的所有配置</span></div><div class="line">git config --list</div></pre></td></tr></table></figure>
+<p>那么当我如此设置好了之后，发现用<code>hexo d</code>部署后依然是公司的账户，这个时候的我很绝望。</p>
+<p>后来我去看hexo的deploy模块，发现没有问题，静下心思考，发现原来是这样的：</p>
+<p>hexo的部署并不是部署自己的根目录，而是部署根目录下的<code>.deploy_git/</code> 文件夹中，所以git config 不应该在hexo的根目录设置用户名和邮箱，而是应该去<code>.deploy_git/</code> 文件下设置。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>进入<code>.deploy_git/</code> 文件夹，发现git config果然没有修改过，赶紧添加后成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config user.name <span class="string">"yourname"</span></div><div class="line">git config user.email <span class="string">"you@emali.com"</span></div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在多用户git账号的情况下，似乎并没有很好的解决办法，只有通过单独设置用户名和邮箱才行。所以在实际使用中，还是应该将常用的用户名和邮箱设置为global，其他账号的项目则单独设置。</p>
+
+      
+    </div>
+
+    <div>
+      
         
-          
-          问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ
-思考造成这个问题的原因应该在git con
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/05/Hexo部署github遇到的坑/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
-      
-    </div>
-
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/05/01/2017-05-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="尺子先生">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="巴山夜雨">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/01/2017-05-01/" itemprop="url">用SS+Privoxy+树莓派让Node爬虫翻墙</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T20:00:00+08:00">
-                2017-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
           
-            
+            <a href="/tags/github/" rel="tag"># github</a>
           
-
+            <a href="/tags/config/" rel="tag"># config</a>
           
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
         
-          
-          前言之前一直想要做一个feed读取器，并利用feed获取的链接去抓取资讯全文。然而有一些feed需要科学上网才能获取，这就让我萌生了：如何让Node科学上网来进行爬虫抓取。
-查阅了资料发现，Node的http模块本身带有一个Proxy代理功能，除此之外，没有科学上网的本领。而我已经买了一年的shad
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/01/2017-05-01/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/2017-05-01/" rel="next" title="用SS+Privoxy+树莓派让Node爬虫翻墙">
+                <i class="fa fa-chevron-left"></i> 用SS+Privoxy+树莓派让Node爬虫翻墙
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
+          <span class="post-nav-divider"></span>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/03/09/2017-03-09/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="尺子先生">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="巴山夜雨">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/09/2017-03-09/" itemprop="url">feedparser学习与实战——基于Node.js的Feed解析器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-09T22:04:35+08:00">
-                2017-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          node-feedparser这篇文章是我学习node-feedparser的时候所写的，前半部分是翻译了node-feedparser在github上的原文（英语不好，如果翻译有误，还请见谅。），当中也夹杂了一些自己解释；后半部分的实战是我结合 compressed.js ，同时自己在实际运用中的
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/09/2017-03-09/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -607,6 +408,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -626,8 +431,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -700,6 +514,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">2.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -813,6 +643,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
