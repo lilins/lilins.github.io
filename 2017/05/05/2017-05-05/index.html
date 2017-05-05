@@ -1,0 +1,799 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Node.js,Feed,翻译," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="node-feedparser这篇文章是我学习node-feedparser的时候所写的，前半部分是翻译了node-feedparser在github上的原文（英语不好，如果翻译有误，还请见谅。），当中也夹杂了一些自己解释；后半部分的实战是我结合 compressed.js ，同时自己在实际运用中的小结，现在拿出来和大家分享，希望大家给予指正。 文章信息 时间 / 2017年3月9日 版本号 No">
+<meta name="keywords" content="Node.js,Feed,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="feedparser学习与实战——基于Node.js的Feed解析器">
+<meta property="og:url" content="https://lilins.github.io/2017/05/05/2017-05-05/index.html">
+<meta property="og:site_name" content="巴山夜雨">
+<meta property="og:description" content="node-feedparser这篇文章是我学习node-feedparser的时候所写的，前半部分是翻译了node-feedparser在github上的原文（英语不好，如果翻译有误，还请见谅。），当中也夹杂了一些自己解释；后半部分的实战是我结合 compressed.js ，同时自己在实际运用中的小结，现在拿出来和大家分享，希望大家给予指正。 文章信息 时间 / 2017年3月9日 版本号 No">
+<meta property="og:updated_time" content="2017-05-05T14:09:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="feedparser学习与实战——基于Node.js的Feed解析器">
+<meta name="twitter:description" content="node-feedparser这篇文章是我学习node-feedparser的时候所写的，前半部分是翻译了node-feedparser在github上的原文（英语不好，如果翻译有误，还请见谅。），当中也夹杂了一些自己解释；后半部分的实战是我结合 compressed.js ，同时自己在实际运用中的小结，现在拿出来和大家分享，希望大家给予指正。 文章信息 时间 / 2017年3月9日 版本号 No">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lilins.github.io/2017/05/05/2017-05-05/"/>
+
+
+
+
+
+  <title>feedparser学习与实战——基于Node.js的Feed解析器 | 巴山夜雨</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">巴山夜雨</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/05/05/2017-05-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="尺子先生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巴山夜雨">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">feedparser学习与实战——基于Node.js的Feed解析器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-05T22:04:35+08:00">
+                2017-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="node-feedparser"><a href="#node-feedparser" class="headerlink" title="node-feedparser"></a>node-feedparser</h1><p>这篇文章是我学习node-feedparser的时候所写的，前半部分是翻译了node-feedparser在github上的原文（英语不好，如果翻译有误，还请见谅。），当中也夹杂了一些自己解释；后半部分的实战是我结合 <code>compressed.js</code> ，同时自己在实际运用中的小结，现在拿出来和大家分享，希望大家给予指正。</p>
+<h2 id="文章信息"><a href="#文章信息" class="headerlink" title="文章信息"></a>文章信息</h2><ul>
+<li>时间 / 2017年3月9日</li>
+<li>版本号<ul>
+<li>Node.js: v6.10.0</li>
+<li>node-feedparser: v2.1.0</li>
+<li>request: v2.79.0</li>
+<li>iconv-lite: v0.4.15</li>
+</ul>
+</li>
+<li>项目地址 / <a href="https://github.com/danmactough/node-feedparser" target="_blank" rel="external">https://github.com/danmactough/node-feedparser</a></li>
+</ul>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>Feedparser 基于Node.js的RSS,Atom,RDF强劲解析器</li>
+<li>如何安装</li>
+<li>用法<ul>
+<li>feedparser可选参数</li>
+</ul>
+</li>
+<li>例子</li>
+<li>API</li>
+<li>feedparser解析后能得到什么？<ul>
+<li>meta属性列表</li>
+<li>article属性列表</li>
+</ul>
+</li>
+<li>贡献</li>
+<li><p>License</p>
+</li>
+<li><p>实战</p>
+<ul>
+<li>处理数据</li>
+<li>取得数据</li>
+<li>编码问题</li>
+<li>错误捕捉</li>
+</ul>
+</li>
+</ul>
+<h2 id="Feedparser-基于Node-js的RSS-Atom-RDF强劲解析器"><a href="#Feedparser-基于Node-js的RSS-Atom-RDF强劲解析器" class="headerlink" title="Feedparser 基于Node.js的RSS,Atom,RDF强劲解析器"></a>Feedparser 基于Node.js的RSS,Atom,RDF强劲解析器</h2><p>Feedparser是一个基于基于Node.js的强劲解析器，可以解析包括RSS，Atom和RDF信息</p>
+<p>它有一对特性是你在其他的Feed解析器中不常见的：</p>
+<ol>
+<li><p>它可以解析一些相对URL链接（例如<a href="http://www.tbray.org/ongoing/ongoing.atom" target="_blank" rel="external">Tim Bray’s “ongoing”</a>这个Feed）</p>
+</li>
+<li><p>它可以正确地解析一些XML命名空间（包含那些非常规的Feed——用主要的一些Feed元素来定义的非常规命名空间）</p>
+</li>
+</ol>
+<p><em>说明：对第二条的理解是，通常Feed的XML命名是固定的一些标签，但是Feedparser同样可以对一些非常规的XML进行解析，这就是强大之处。</em></p>
+<h2 id="如何安装"><a href="#如何安装" class="headerlink" title="如何安装"></a>如何安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">npm install feedparser</div></pre></td></tr></table></figure>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>这个例子能简要地示范feedparser的基本概念：</p>
+<p><strong>请注意</strong>在学习基本的示范的同时，也要学习简化的范例compressed.js文件，这样也能够让你更全面地开展工作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> FeedParser = <span class="built_in">require</span>(<span class="string">'feedparser'</span>);</div><div class="line"><span class="keyword">var</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>); <span class="comment">// 需要引入一个request，用于抓取Feed</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> req = request(<span class="string">'http://somefeedurl.xml'</span>)</div><div class="line"><span class="keyword">var</span> feedparser = <span class="keyword">new</span> FeedParser([options]);</div><div class="line"></div><div class="line">req.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</div><div class="line">  <span class="comment">// 解决任何的request请求错误</span></div><div class="line">  <span class="comment">// 这个是request包的错误提示</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">req.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> stream = <span class="keyword">this</span>; <span class="comment">// 这里的this是req（所请求request文件），是stream文件类型</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (res.statusCode !== <span class="number">200</span>) &#123;</div><div class="line">    <span class="keyword">this</span>.emit(<span class="string">'error'</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Bad status code'</span>));</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">else</span> &#123;</div><div class="line">    stream.pipe(feedparser);</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">feedparser.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</div><div class="line">  <span class="comment">// 处理feedparser的错误</span></div><div class="line">  <span class="comment">// 这个是feedparser包的错误提示</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">feedparser.on(<span class="string">'readable'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 此时已经获取到Feed信息，在这里可以进行你的操作了</span></div><div class="line">  <span class="keyword">var</span> stream = <span class="keyword">this</span>; <span class="comment">// 这里的this是feedparser， 也是stream文件类型</span></div><div class="line">  <span class="keyword">var</span> meta = <span class="keyword">this</span>.meta; <span class="comment">// 注意：这个meta是在feedparser的实例中一直可以获得。</span></div><div class="line">  <span class="comment">//Meta其实是RSS等一些的元信息，在后面会介绍到，一般来说Meta信息都是重复的。</span></div><div class="line">  <span class="keyword">var</span> item;</div><div class="line"></div><div class="line">  <span class="keyword">while</span> (item = stream.read()) &#123;</div><div class="line">    <span class="built_in">console</span>.log(item);</div><div class="line">    <span class="comment">//在这里输出每一条Feed信息。</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="feedparser可选参数"><a href="#feedparser可选参数" class="headerlink" title="feedparser可选参数"></a>feedparser可选参数</h3><ul>
+<li><code>normalize</code>：设置<code>false</code>让Feedparser的默认值失效。无论这个Feed的形式，这个参数都能将其解析成一个包含RSS2.0格式，正确属性的对象。序列化后的形式如以下所示（只进入第一层）：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//通过bash输出：</div><div class="line"></div><div class="line">属性名：rss:@  值：[object Object]</div><div class="line">属性名：rss:title  值：[object Object]</div><div class="line">属性名：rss:link  值：[object Object]</div><div class="line">属性名：rss:author  值：[object Object]</div><div class="line">属性名：rss:guid  值：[object Object]</div><div class="line">属性名：rss:category  值：[object Object]</div><div class="line">属性名：rss:pubdate  值：[object Object]</div><div class="line">属性名：rss:comments  值：[object Object]</div><div class="line">属性名：rss:description  值：[object Object]</div><div class="line">属性名：meta  值：[object Object]</div></pre></td></tr></table></figure>
+<ul>
+<li><p><code>addmeta</code>：设置<code>false</code>让Feedparser的默认值失效。让每一个Feed的article信息都加入Meta信息。个人建议可以设置为true，一般来说，每个Feed的Meta信息都是唯一的，而article信息不同，只要第一次获取Meta后，就可以只需要article信息。</p>
+</li>
+<li><p><code>feedurl</code>：Feed的URL地址。FeedParser能非常优秀地处理相对url，但是一些Feed在使用相对url时，并不声明<code>xml:base</code>信息。尽管feedparser非常有效，但是在我们处理feed和尝试着处理这些相对url之前，我们仍然不能知道feed的url。如果我们发现了feed的url，我们将会返回并处理那些我们已经得到的相对url，但这将会消耗一段时间（并非很长）。如果你想要确信我们不对相对url进行预处理（或者feedparser无法处理相对url），你应该设置<code>feedurl</code>选项，否则，你就当没看见过它吧~</p>
+</li>
+<li><p><code>resume_saxerror</code>：设置<code>false</code>让Feedparser的默认值失效。这个选项能够抛出<code>error</code>中的<code>SAXError</code>错误，并自动进行后续的解析。在我的测试中，<code>SAXErrors</code>并不常错误，所以开启这个选项通常对你很有帮助。如果你想要完全掌握和处理错误，并在任意点中止解析feed的话，可以尝试用这个选项。</p>
+</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>在这里查看例子 <a href="examples/"><code>examples</code></a> 。</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="转换-Stream"><a href="#转换-Stream" class="headerlink" title="转换 Stream"></a>转换 Stream</h3><p>Feedparser是一个stream转换器（<a href="http://nodejs.org/api/stream.html#stream_class_stream_transform" target="_blank" rel="external">关于stream你可以在nodejs官网阅读</a>），从XML文件转换为Javascript的objects对象。</p>
+<p>每一个可读的区块都是一个对象，这个对象代表feed中的article信息。</p>
+<h3 id="发出的项目"><a href="#发出的项目" class="headerlink" title="发出的项目"></a>发出的项目</h3><ul>
+<li><code>meta</code> - 被解析后，称作feed的 <code>meta</code></li>
+<li><code>error</code> - 任何时候Feedparser发出的错误（包括SAXError, Feedparser error等）</li>
+</ul>
+<h2 id="feedparser解析后能得到什么？"><a href="#feedparser解析后能得到什么？" class="headerlink" title="feedparser解析后能得到什么？"></a>feedparser解析后能得到什么？</h2><p>Feedparser对每一个Feed都会解析出 <code>meta</code> 和一个或更多的 <code>articles</code>。</p>
+<p>不论Feed的形式如何， <code>meta</code> 和每一个 <code>article</code> 都包含一个RSS2.0规范同时加上规范化后的属性的信息流。举个例子，一个Atom feed会有一个 <code>meta.description</code> 属性，但是同样会有一个 <code>meta[&#39;atom:subtitle&#39;]</code> 属性。</p>
+<p>这个规范化后的属性是用于向用户提供一个规范的接口——当你不知道feed的形式，或者搞不清不同feed形式之间的差异时，用这个接口就可以方便获取feed信息。不过当你需要原始信息的时候会依然会保留给你使用。此外，Feedparser还提供了一些大众化的命名空间扩展，例如 <code>itunes</code> ,  <code>media</code> ,  <code>feedburner</code> 和 <code>pheedo</code> 这些扩展。举例：如果一个feed的article同时包含了 <code>itunes:image</code> 或 <code>media:thumbnail</code> ，那么这两个的url地址都会保存到article的 <code>image.url</code> 属性中。</p>
+<p>所有的属性都会进行初始化，设置为 <code>null</code> （空数组或者空对象都会有恰当的属性）。这个能够节省你很多时间来检查属性是否为 <code>undefined</code> ，例如，当你使用jade模板的时候。</p>
+<p>除此之外，所有的属性（包含命名空间）都使用小写字母（”xmlUrl” and<br>“pubDate”仍然提供向下兼容）。“好用”取代了“原生”——衷心希望你能不必为骆驼拼写法而烦恼。</p>
+<p>如果你设置normalize为true，那么 <code>meta</code> 和 <code>article</code> 的 <code>title</code> 和 <code>description</code> 属性都会将HTML标签剥离。如果你需要这些HTML元素，你可以从 <code>meta[&#39;atom:subtitle&#39;][&#39;#&#39;]</code> 这个属性取得。</p>
+<h3 id="meta属性列表"><a href="#meta属性列表" class="headerlink" title="meta属性列表"></a>meta属性列表</h3><ul>
+<li>title</li>
+<li>description</li>
+<li>link (网站链接)</li>
+<li>xmlurl</li>
+<li>date (最近的日期)</li>
+<li>pubdate (原始出版日期)</li>
+<li>author</li>
+<li>language</li>
+<li>image (一个对象，包含 <code>url</code> 和 <code>title</code> 属性)</li>
+<li>favicon (favicon的链接——只提供给Atom feeds)</li>
+<li>copyright</li>
+<li>generator</li>
+<li>categories (一个字符串数组)</li>
+</ul>
+<h3 id="article属性列表"><a href="#article属性列表" class="headerlink" title="article属性列表"></a>article属性列表</h3><ul>
+<li>title</li>
+<li>description (通常是完整的标题内容)</li>
+<li>summary (通常是文章摘录)</li>
+<li>link</li>
+<li>origlink</li>
+<li>permalink</li>
+<li>date</li>
+<li>pubdate</li>
+<li>author</li>
+<li>guid</li>
+<li>comments</li>
+<li>image</li>
+<li>categories</li>
+<li>source </li>
+<li>enclosures</li>
+<li>meta </li>
+</ul>
+<h2 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h2><p>在这里查看所有代码  -&gt; <a href="https://github.com/danmactough/node-feedparser/graphs/contributors" target="_blank" rel="external">contributors</a>。</p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>(The MIT License)</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="处理数据"><a href="#处理数据" class="headerlink" title="处理数据"></a>处理数据</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">feedparser.on(<span class="string">'readable'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> item;</div><div class="line">  <span class="keyword">while</span> (item = <span class="keyword">this</span>.read()) &#123;</div><div class="line">    <span class="comment">//一般我们在这里获取数据，在上面提到的，feedparser一共会输出两种信息，一种是规范化后的RSS2.0，另一种是原有的。</span></div><div class="line">    <span class="comment">//原有信息的获取：(推荐这种)</span></div><div class="line">    <span class="built_in">console</span>.log(item.meta.title);</div><div class="line">    <span class="built_in">console</span>.log(item.title);</div><div class="line">    <span class="comment">//RSS2.0信息的获取：</span></div><div class="line">    <span class="built_in">console</span>.log(item[<span class="string">'meta'</span>][<span class="string">'rss:title'</span>][<span class="string">'#'</span>]);</div><div class="line">    <span class="built_in">console</span>.log(item[<span class="string">'rss:title'</span>][<span class="string">'#'</span>]);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>需要注意的是</strong>你无法通过return将上述的数据从函数中取出，也无法通过在外定义变量，在内赋值取出。因为这里用到了异步编程的事件监听，所有的动作都是异步操作，如果通过上述两个办法取出的值都是undefined。那么如何取出这些数据？这里有两个办法：</p>
+<h3 id="取得数据"><a href="#取得数据" class="headerlink" title="取得数据"></a>取得数据</h3><p>因为feedparser使用的是异步编程的办法，所以无法通过常规方法取出值，不过仍然有以下两种办法：</p>
+<ul>
+<li>直接在函数中进行操作</li>
+<li>使用Promise封装</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> *  在函数中直接进行操作不再演示</div><div class="line"> *  这里主要演示Promise封装</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>)=&gt;</span>&#123;</div><div class="line">    <span class="comment">//这里是一些request操作代码，暂时省略</span></div><div class="line"></div><div class="line">    feedparser.on(<span class="string">'readable'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> item;</div><div class="line">      <span class="keyword">while</span> (item = <span class="keyword">this</span>.read()) &#123;</div><div class="line">        resolve(item);</div><div class="line">      &#125;</div><div class="line">&#125;).then(<span class="function">(<span class="params">result</span>)=&gt;</span>&#123;</div><div class="line">  <span class="comment">//在这里可以用then继续操作</span></div><div class="line">  <span class="built_in">console</span>.log(result.title);</div><div class="line">  <span class="comment">//也可以return一个Promise对象，并在其他地方调用这个Promise。</span></div><div class="line">  <span class="comment">//但需要注意，在调用Promise的地方也需要异步编程</span></div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;).catch(<span class="function">(<span class="params">err</span>)=&gt;</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(err);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="编码问题"><a href="#编码问题" class="headerlink" title="编码问题"></a>编码问题</h3><p>在抓取非英文网页时，总会遇到编码问题，中文也不例外。比如新浪新闻的编码是”utf-8”，但是腾讯新闻的编码是”gb3212”。feedparser虽然强大，但不负责解决这些问题，这个时候需要我们引入 <code>iconv-lite</code> ，来解决编码问题。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> url = <span class="string">"http://www.example.xml"</span>;</div><div class="line"><span class="keyword">var</span> req = request(url);</div><div class="line"><span class="keyword">var</span> feedparser = FeedParser();</div><div class="line"><span class="keyword">var</span> encode = <span class="string">'utf-8'</span>;</div><div class="line"></div><div class="line">req.on(<span class="string">'response'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(res.statusCode); <span class="comment">// 200</span></div><div class="line">      <span class="built_in">console</span>.log(res.headers[<span class="string">'content-type'</span>]); <span class="comment">// 'image/png'</span></div><div class="line">    &#125;).pipe(iconv.decodeStream(encode)) <span class="comment">//在iconv-lite可以直接调用</span></div><div class="line">    .pipe(feedparser);</div></pre></td></tr></table></figure>
+<p>因为 <code>request</code> 和 <code>feedparser</code> 之间的通讯是通过stream流的，而 <code>iconv-lite</code> 正好又有对于Stream流的API接口，所以直接调用即可。如果感兴趣或者有需要的同学还可以去查看 <code>iconv-lite</code> 的<a href="https://github.com/ashtuchkin/iconv-lite" target="_blank" rel="external">官方文档</a>查看其它的方法。</p>
+<h3 id="错误捕捉"><a href="#错误捕捉" class="headerlink" title="错误捕捉"></a>错误捕捉</h3><p>在整个抓取Feed的过程中，会遇到很多的错误，如何处理这些错误？这里借鉴一下官方文档所提到的 <code>compressed.js</code> 中的方法，它将所有的错误处理写成一个函数，然后在每次事件监听的地方，调用处理错误函数即可完成。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//错误处理函数：</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">done</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (err) &#123;</div><div class="line">    <span class="built_in">console</span>.log(err, err.stack);</div><div class="line">    <span class="keyword">return</span> process.exit(<span class="number">1</span>);</div><div class="line">  &#125;</div><div class="line">  process.exit();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//事件监听调用done</span></div><div class="line"><span class="comment">// ...省略</span></div><div class="line">  req.on(<span class="string">'error'</span>, done);</div><div class="line">  <span class="comment">// ...省略</span></div><div class="line">  feedparser.on(<span class="string">'error'</span>, done);</div><div class="line">  feedparser.on(<span class="string">'end'</span>, done);</div><div class="line">  feedparser.on(<span class="string">'readable'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// ...省略</span></div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+          
+            <a href="/tags/Feed/" rel="tag"># Feed</a>
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/04/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="尺子先生" />
+          <p class="site-author-name" itemprop="name">尺子先生</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#node-feedparser"><span class="nav-number">1.</span> <span class="nav-text">node-feedparser</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文章信息"><span class="nav-number">1.1.</span> <span class="nav-text">文章信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.2.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feedparser-基于Node-js的RSS-Atom-RDF强劲解析器"><span class="nav-number">1.3.</span> <span class="nav-text">Feedparser 基于Node.js的RSS,Atom,RDF强劲解析器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何安装"><span class="nav-number">1.4.</span> <span class="nav-text">如何安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用法"><span class="nav-number">1.5.</span> <span class="nav-text">用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#feedparser可选参数"><span class="nav-number">1.5.1.</span> <span class="nav-text">feedparser可选参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">1.6.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API"><span class="nav-number">1.7.</span> <span class="nav-text">API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#转换-Stream"><span class="nav-number">1.7.1.</span> <span class="nav-text">转换 Stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发出的项目"><span class="nav-number">1.7.2.</span> <span class="nav-text">发出的项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feedparser解析后能得到什么？"><span class="nav-number">1.8.</span> <span class="nav-text">feedparser解析后能得到什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#meta属性列表"><span class="nav-number">1.8.1.</span> <span class="nav-text">meta属性列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#article属性列表"><span class="nav-number">1.8.2.</span> <span class="nav-text">article属性列表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贡献"><span class="nav-number">1.9.</span> <span class="nav-text">贡献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#License"><span class="nav-number">1.10.</span> <span class="nav-text">License</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">1.11.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理数据"><span class="nav-number">1.11.1.</span> <span class="nav-text">处理数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取得数据"><span class="nav-number">1.11.2.</span> <span class="nav-text">取得数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码问题"><span class="nav-number">1.11.3.</span> <span class="nav-text">编码问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误捕捉"><span class="nav-number">1.11.4.</span> <span class="nav-text">错误捕捉</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">尺子先生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
