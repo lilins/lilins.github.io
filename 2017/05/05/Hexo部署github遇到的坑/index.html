@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
+<meta name="description" content="问题最近在玩Hexo的时候发现，使用 Hexo d 部署到github上的时候，用户名变成了公司的git账号，再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账号的话，那么 12g">
 <meta name="keywords" content="hexo,github,config">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo部署github遇到的坑">
 <meta property="og:url" content="https://lilins.github.io/2017/05/05/Hexo部署github遇到的坑/index.html">
 <meta property="og:site_name" content="巴山夜雨">
-<meta property="og:description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
-<meta property="og:updated_time" content="2017-05-05T16:15:03.000Z">
+<meta property="og:description" content="问题最近在玩Hexo的时候发现，使用 Hexo d 部署到github上的时候，用户名变成了公司的git账号，再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账号的话，那么 12g">
+<meta property="og:updated_time" content="2017-05-07T13:05:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo部署github遇到的坑">
-<meta name="twitter:description" content="问题最近在玩Hexo的时候发现，如果使用 Hexo d 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账">
+<meta name="twitter:description" content="问题最近在玩Hexo的时候发现，使用 Hexo d 部署到github上的时候，用户名变成了公司的git账号，再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ 思考造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。 如果你只有一个git账号的话，那么 12g">
 
 
 
@@ -317,19 +317,20 @@
       
 
       
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>最近在玩Hexo的时候发现，如果使用 <code>Hexo d</code> 部署到github上的时候，用户名变成了我公司的git账号，开始慌了，然后再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ</p>
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>最近在玩Hexo的时候发现，使用 <code>Hexo d</code> 部署到github上的时候，用户名变成了公司的git账号，再去查我其他仓库的git提交，居然发现也都是我公司的账号！瞬间炸裂，我之前commit的contributions都没了QAQ</p>
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>造成这个问题的原因应该在git config的设置上，查阅了相关的资料，我发现问题出在git的global选项上。</p>
 <p>如果你只有一个git账号的话，那么</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"yourname"</span></div><div class="line">git config --global user.email <span class="string">"you@emali.com"</span></div></pre></td></tr></table></figure>
-<p>这样设置是理所当然的，但如果我是多账户（个人一个，公司一个）那就会出现问题。如果当你没有设置单独的用户名，那么就会按照你的全局设置提交。</p>
+<p>这样设置是理所当然的，但如果我是多账户（个人一个，公司一个）那就会出现问题：当你没有局部设置的用户名，那么就会按照你的全局设置提交。</p>
 <p>所以这个时候需要你单独设置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> <span class="comment"># 这样单独设置好的用户名和邮箱，会把全局的设置覆盖</span></div><div class="line">git config user.name <span class="string">"yourname"</span></div><div class="line">git config user.email <span class="string">"you@emali.com"</span></div><div class="line"></div><div class="line"> <span class="comment"># 输入以下指令可以查看git的name</span></div><div class="line">git config name</div><div class="line"> <span class="comment"># 输入以下指令可以查看git的所有配置</span></div><div class="line">git config --list</div></pre></td></tr></table></figure>
-<p>那么当我如此设置好了之后，发现用<code>hexo d</code>部署后依然是公司的账户，这个时候的我很绝望。</p>
-<p>后来我去看hexo的deploy模块，发现没有问题，静下心思考，发现原来是这样的：</p>
-<p>hexo的部署并不是部署自己的根目录，而是部署根目录下的<code>.deploy_git/</code> 文件夹中，所以git config 不应该在hexo的根目录设置用户名和邮箱，而是应该去<code>.deploy_git/</code> 文件下设置。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>进入<code>.deploy_git/</code> 文件夹，发现git config果然没有修改过，赶紧添加后成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> <span class="comment"># 这样局部设置好的用户名和邮箱，会把全局的设置覆盖</span></div><div class="line">git config user.name <span class="string">"yourname"</span></div><div class="line">git config user.email <span class="string">"you@emali.com"</span></div><div class="line"></div><div class="line"> <span class="comment"># 输入以下指令可以查看git的name</span></div><div class="line">git config name</div><div class="line"> <span class="comment"># 输入以下指令可以查看git的所有配置</span></div><div class="line">git config --list</div></pre></td></tr></table></figure>
+<p>那么当我如此设置好了之后，发现部署后依然是公司的账户。。。</p>
+<p>后来先去翻查hexo的deploy模块，没有问题，静下心思考，发现盲点在于：与github同步的目录并不是hexo的根目录。</p>
+<p>hexo的部署并不是部署自己的根目录，而是部署根目录下的<code>.deploy_git/</code> 文件夹中，所以git config 不应该在hexo的根目录设置局部的用户名和邮箱，而是应该去<code>.deploy_git/</code> 文件下设置。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>进入<code>.deploy_git/</code> 文件夹，发现git config果然没有修改过，赶紧添加用户名和账户：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config user.name <span class="string">"yourname"</span></div><div class="line">git config user.email <span class="string">"you@emali.com"</span></div></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在多用户git账号的情况下，似乎并没有很好的解决办法，只有通过单独设置用户名和邮箱才行。所以在实际使用中，还是应该将常用的用户名和邮箱设置为global，其他账号的项目则单独设置。</p>
+<p>push成功！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在多用户git账号的情况下，似乎并没有很好的解决办法，只有通过设置局部用户名和邮箱才行。所以在实际使用中，还是应该将常用的用户名和邮箱设置为全局global，其他账号的项目则局部设置。</p>
 
       
     </div>
@@ -385,6 +386,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/06/cloudsim笔记/" rel="prev" title="cloudsim笔记">
+                cloudsim笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -456,7 +461,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -469,7 +474,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
