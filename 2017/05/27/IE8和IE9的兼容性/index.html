@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ie8,ie9,兼容性,javascript,原生js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="检测IE版本号通过以下函数可以区分IE版本号，以便兼容不同特性 12345678910111213141516//检测函数function checkIeVersion(version) &amp;#123;    var div = document.createElement(&quot;div&quot;);    div.innerHTML = &quot;&amp;lt;!--[if IE &quot; + version + &quot;]&amp;gt;&amp;">
+<meta name="keywords" content="ie8,ie9,兼容性,javascript,原生js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IE8和IE9的兼容性">
+<meta property="og:url" content="https://lilins.github.io/2017/05/27/IE8和IE9的兼容性/index.html">
+<meta property="og:site_name" content="巴山夜雨">
+<meta property="og:description" content="检测IE版本号通过以下函数可以区分IE版本号，以便兼容不同特性 12345678910111213141516//检测函数function checkIeVersion(version) &amp;#123;    var div = document.createElement(&quot;div&quot;);    div.innerHTML = &quot;&amp;lt;!--[if IE &quot; + version + &quot;]&amp;gt;&amp;">
+<meta property="og:updated_time" content="2017-05-27T09:46:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IE8和IE9的兼容性">
+<meta name="twitter:description" content="检测IE版本号通过以下函数可以区分IE版本号，以便兼容不同特性 12345678910111213141516//检测函数function checkIeVersion(version) &amp;#123;    var div = document.createElement(&quot;div&quot;);    div.innerHTML = &quot;&amp;lt;!--[if IE &quot; + version + &quot;]&amp;gt;&amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lilins.github.io/2017/05/27/IE8和IE9的兼容性/"/>
+
+
+
+
+
+  <title>IE8和IE9的兼容性 | 巴山夜雨</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">巴山夜雨</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/05/27/IE8和IE9的兼容性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="尺子先生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巴山夜雨">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IE8和IE9的兼容性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T15:59:08+08:00">
+                2017-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="检测IE版本号"><a href="#检测IE版本号" class="headerlink" title="检测IE版本号"></a>检测IE版本号</h2><p>通过以下函数可以区分IE版本号，以便兼容不同特性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//检测函数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkIeVersion</span>(<span class="params">version</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> div = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line">    div.innerHTML = <span class="string">"&lt;!--[if IE "</span> + version + <span class="string">"]&gt;&lt;i&gt;&lt;/i&gt;&lt;![endif]--&gt;"</span>;</div><div class="line">    <span class="keyword">return</span> div.getElementsByTagName(<span class="string">"i"</span>).length === <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getIe</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> versions = [<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; versions.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (checkIeVersion(versions[i])) &#123;</div><div class="line">            <span class="keyword">return</span> versions[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="border-radius"><a href="#border-radius" class="headerlink" title="border-radius"></a>border-radius</h2><p>常见于IE8以下，包括IE8不支持此特性，要想兼容的办法很多，这里试举一例：</p>
+<p>使用PIE来支持border-radius</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.pie_radius</span>&#123;</div><div class="line">    </div><div class="line">    <span class="attribute">width</span>:<span class="number">200px</span>;</div><div class="line">    <span class="attribute">height</span>:<span class="number">200px</span>;</div><div class="line">    <span class="attribute">-moz-border-radius</span>:<span class="number">8px</span>;</div><div class="line">    <span class="attribute">-webkit-border-radius</span>:<span class="number">8px</span>;</div><div class="line">    <span class="attribute">border-radius</span>:<span class="number">8px</span>;</div><div class="line">    <span class="attribute">position</span>:relative;</div><div class="line"></div><div class="line">    <span class="comment">//兼容IE8以下</span></div><div class="line">    <span class="attribute">behavior</span>:url(<span class="string">pie.htc</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里必须注意，需要引入pie.htc文件。下载地址：<a href="https://github.com/lojjic/PIE/downloads" target="_blank" rel="external">链接</a></p>
+<h2 id="data"><a href="#data" class="headerlink" title="data-*"></a>data-*</h2><p>在IE8之前，包括IE8，都不兼容HTML5，所以需要获取data-*的数据需要这样写：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//正常获取data-*</span></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'index'</span>).dataset.index;</div><div class="line"><span class="comment">//IE8以下，获取data-*</span></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'index'</span>).getAttribute(<span class="string">'data-index'</span>);</div></pre></td></tr></table></figure>
+<h2 id="classList"><a href="#classList" class="headerlink" title="classList"></a>classList</h2><p>类名操作器，如果使用classList属性，就可以简单的使用<code>contains()</code>,<code>add()</code>,<code>remove()</code>等函数，但如果不支持的话，我们就需要使用更原始的办法：</p>
+<p>从IE9以下，包括IE9就不支持classList了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasClass</span>(<span class="params">element,className</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(ieVersion&lt;<span class="number">10</span>)&#123;</div><div class="line">        <span class="keyword">return</span> !!element.className.match(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'(\\s|^)'</span>+className+<span class="string">'(\\s|$)'</span>));</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="keyword">return</span> !!element.classList.contains(className);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addClass</span>(<span class="params">element, className</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(ieVersion&lt;<span class="number">10</span>)&#123;</div><div class="line">        element.className += <span class="string">' '</span> + className;  </div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        element.classList.add(className);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeClass</span>(<span class="params">element, className</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(ieVersion&lt;<span class="number">10</span>)&#123;</div><div class="line">        element.className = element.className.replace(</div><div class="line">            <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'( |^)'</span> + className + <span class="string">'( |$)'</span>, <span class="string">'g'</span>), <span class="string">' '</span>).trim();</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        element.classList.remove(className);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="mouseout"><a href="#mouseout" class="headerlink" title="mouseout"></a>mouseout</h2><p>IE8的<code>mouseout</code>事件需要<code>onmouseout</code>，IE9以上只需要<code>mouseout</code>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ie8/" rel="tag"># ie8</a>
+          
+            <a href="/tags/ie9/" rel="tag"># ie9</a>
+          
+            <a href="/tags/兼容性/" rel="tag"># 兼容性</a>
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/原生js/" rel="tag"># 原生js</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/06/cloudsim笔记/" rel="next" title="cloudsim笔记">
+                <i class="fa fa-chevron-left"></i> cloudsim笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="尺子先生" />
+          <p class="site-author-name" itemprop="name">尺子先生</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lilins" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/lule0102" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#检测IE版本号"><span class="nav-number">1.</span> <span class="nav-text">检测IE版本号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#border-radius"><span class="nav-number">2.</span> <span class="nav-text">border-radius</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data"><span class="nav-number">3.</span> <span class="nav-text">data-*</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#classList"><span class="nav-number">4.</span> <span class="nav-text">classList</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseout"><span class="nav-number">5.</span> <span class="nav-text">mouseout</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-砳鹿"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">尺子先生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
