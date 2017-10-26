@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,DOM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="要弄清的问题通过搭配可以组合出很多种属性，本文就是介绍如何区分这些属性。 前缀 offset client scroll *screen *page  后缀 Width, Height Left, Top X, Y   offset 相关offsetWidth、offsetHeight只读属性，代表了元素的布局宽度和布局高度，包含了以下：  width/height border(边框) padd">
+<meta name="keywords" content="JavaScript,DOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="offset、scroll、client、screen的区别">
+<meta property="og:url" content="https://lilins.github.io/2017/10/26/offset、scroll、client、screen/index.html">
+<meta property="og:site_name" content="巴山夜雨">
+<meta property="og:description" content="要弄清的问题通过搭配可以组合出很多种属性，本文就是介绍如何区分这些属性。 前缀 offset client scroll *screen *page  后缀 Width, Height Left, Top X, Y   offset 相关offsetWidth、offsetHeight只读属性，代表了元素的布局宽度和布局高度，包含了以下：  width/height border(边框) padd">
+<meta property="og:updated_time" content="2017-10-26T07:00:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="offset、scroll、client、screen的区别">
+<meta name="twitter:description" content="要弄清的问题通过搭配可以组合出很多种属性，本文就是介绍如何区分这些属性。 前缀 offset client scroll *screen *page  后缀 Width, Height Left, Top X, Y   offset 相关offsetWidth、offsetHeight只读属性，代表了元素的布局宽度和布局高度，包含了以下：  width/height border(边框) padd">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lilins.github.io/2017/10/26/offset、scroll、client、screen/"/>
+
+
+
+
+
+  <title>offset、scroll、client、screen的区别 | 巴山夜雨</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">巴山夜雨</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/10/26/offset、scroll、client、screen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="尺子先生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巴山夜雨">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">offset、scroll、client、screen的区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T11:03:37+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="要弄清的问题"><a href="#要弄清的问题" class="headerlink" title="要弄清的问题"></a>要弄清的问题</h2><p>通过搭配可以组合出很多种属性，本文就是介绍如何区分这些属性。</p>
+<h3 id="前缀"><a href="#前缀" class="headerlink" title="前缀"></a>前缀</h3><ul>
+<li>offset</li>
+<li>client</li>
+<li>scroll</li>
+<li>*screen</li>
+<li>*page</li>
+</ul>
+<h3 id="后缀"><a href="#后缀" class="headerlink" title="后缀"></a>后缀</h3><ul>
+<li>Width, Height</li>
+<li>Left, Top</li>
+<li>X, Y</li>
+</ul>
+<hr>
+<h2 id="offset-相关"><a href="#offset-相关" class="headerlink" title="offset 相关"></a>offset 相关</h2><h3 id="offsetWidth、offsetHeight"><a href="#offsetWidth、offsetHeight" class="headerlink" title="offsetWidth、offsetHeight"></a>offsetWidth、offsetHeight</h3><p>只读属性，代表了元素的布局宽度和布局高度，包含了以下：</p>
+<ul>
+<li>width/height</li>
+<li>border(边框)</li>
+<li>padding(内边距)</li>
+<li>scrollbar(如果存在滚动条，并且被渲染)</li>
+</ul>
+<h3 id="offsetParent"><a href="#offsetParent" class="headerlink" title="offsetParent"></a>offsetParent</h3><p>只读属性，指向最近的包含该元素的定位元素。</p>
+<p>定位元素是指含有 <code>position: absolute/relative</code> 。</p>
+<ul>
+<li>若有定位元素则返回该元素；</li>
+<li>若没有定位元素，返回最近的 <code>table</code>, <code>table cell</code> 或根元素 <code>body</code>；</li>
+<li>当元素的 <code>style.display</code> 设置为 <code>none</code> 时，offsetParent 返回 <code>null</code>。</li>
+</ul>
+<h3 id="offsetLeft、offsetTop"><a href="#offsetLeft、offsetTop" class="headerlink" title="offsetLeft、offsetTop"></a>offsetLeft、offsetTop</h3><p>只读属性，返回当前元素左上角相对于 <code>HTMLElement.offsetParent</code> 节点的上、左边界偏移的像素值，包含以下：</p>
+<ul>
+<li><code>offsetParent</code> 的 <code>padding</code></li>
+<li>中间元素的 <code>width</code>/<code>height</code></li>
+<li>自身的 <code>margin</code></li>
+</ul>
+<hr>
+<h2 id="client-相关"><a href="#client-相关" class="headerlink" title="client 相关"></a>client 相关</h2><h3 id="clientWidth、clientHeight"><a href="#clientWidth、clientHeight" class="headerlink" title="clientWidth、clientHeight"></a>clientWidth、clientHeight</h3><p>元素的内部宽度、高度。该属性包含以下：</p>
+<ul>
+<li>width/height</li>
+<li>padding(内边距)</li>
+</ul>
+<p>不包括垂直滚动条（如果有）、边框和外边距。</p>
+<h3 id="clientLeft、clientTop"><a href="#clientLeft、clientTop" class="headerlink" title="clientLeft、clientTop"></a>clientLeft、clientTop</h3><p>只读属性，一个元素顶部边框的宽度、高度，包含：</p>
+<ul>
+<li>border(边框)</li>
+</ul>
+<hr>
+<h2 id="scroll-相关"><a href="#scroll-相关" class="headerlink" title="scroll 相关"></a>scroll 相关</h2><h3 id="scrollWidth、scrollHeight"><a href="#scrollWidth、scrollHeight" class="headerlink" title="scrollWidth、scrollHeight"></a>scrollWidth、scrollHeight</h3><p>只读属性，若元素的宽度、高度大于其内容的区域（例如，元素存在滚动条时）, <code>scrollWidth</code>/<code>scrollHeight</code> 的值要大于 <code>clientWidth</code>/<code>clientHeight</code>，包含以下：</p>
+<ul>
+<li>溢出部分</li>
+<li>clientWidth/clientHeight</li>
+</ul>
+<h3 id="scrollLeft、scrollTop"><a href="#scrollLeft、scrollTop" class="headerlink" title="scrollLeft、scrollTop"></a>scrollLeft、scrollTop</h3><p>可读写，一个元素的 <code>scrollLeft</code>、<code>scrollTop</code> 是可以去计算出这个元素最高高度、宽度距离它容器顶部、右边的可见高度。</p>
+<ul>
+<li>元素的滚动条的位置；</li>
+<li>当没有产生垂直方向的滚动条,那它的 <code>scrollTop</code> 的值默认为 0；</li>
+<li>通过设置它们来让元素中的内容滚动。</li>
+</ul>
+<hr>
+<h2 id="screen-page-X-Y-相关"><a href="#screen-page-X-Y-相关" class="headerlink" title="screen, page, X/Y 相关"></a>screen, page, X/Y 相关</h2><p>带有 <code>X/Y</code> 后缀的属性都是 <code>MouseEvent</code> 的独有属性，用于鼠标事件。</p>
+<h3 id="offsetX、offsetY"><a href="#offsetX、offsetY" class="headerlink" title="offsetX、offsetY"></a>offsetX、offsetY</h3><p>设置或获取，鼠标指针位置<strong>相对于触发事件</strong>的对象的 X/Y 坐标。</p>
+<h3 id="clientX、clientY"><a href="#clientX、clientY" class="headerlink" title="clientX、clientY"></a>clientX、clientY</h3><p>设置或获取，鼠标指针位置<strong>相对于当前窗口</strong>的 X/Y 坐标，其中客户区域不包括窗口自身的控件和滚动条。</p>
+<h3 id="screenX、screenY"><a href="#screenX、screenY" class="headerlink" title="screenX、screenY"></a>screenX、screenY</h3><p>设置或获取，鼠标指针位置<strong>相对于用户屏幕</strong>的 X/Y 坐标。</p>
+<h3 id="pageX、pageY"><a href="#pageX、pageY" class="headerlink" title="pageX、pageY"></a>pageX、pageY</h3><p>获取，鼠标指针位置<strong>相对于整个文档</strong>的 X/Y 坐标。仅支持到 IE9。</p>
+<hr>
+<h2 id="区别：style-top-和-offsetTop"><a href="#区别：style-top-和-offsetTop" class="headerlink" title="区别：style.top 和 offsetTop"></a>区别：style.top 和 offsetTop</h2><ul>
+<li>offsetTop 返回的是数字，而 style.top 返回的是字符串，除了数字外还带有单位：px 。</li>
+<li>offsetTop 只读，而 style.top 可读写。</li>
+<li>如果没有给 HTML 元素指定过 top 样式，则 style.top 返回的是空字符串。</li>
+</ul>
+<p>offsetLeft 与 style.left、offsetWidth 与 style.width、offsetHeight 与 style.height 也是同样道理。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/DOM/" rel="tag"># DOM</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/03/webpack笔记/" rel="next" title="webpack笔记">
+                <i class="fa fa-chevron-left"></i> webpack笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="尺子先生" />
+          <p class="site-author-name" itemprop="name">尺子先生</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lilins" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/lule0102" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#要弄清的问题"><span class="nav-number">1.</span> <span class="nav-text">要弄清的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀"><span class="nav-number">1.1.</span> <span class="nav-text">前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后缀"><span class="nav-number">1.2.</span> <span class="nav-text">后缀</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offset-相关"><span class="nav-number">2.</span> <span class="nav-text">offset 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#offsetWidth、offsetHeight"><span class="nav-number">2.1.</span> <span class="nav-text">offsetWidth、offsetHeight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#offsetParent"><span class="nav-number">2.2.</span> <span class="nav-text">offsetParent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#offsetLeft、offsetTop"><span class="nav-number">2.3.</span> <span class="nav-text">offsetLeft、offsetTop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#client-相关"><span class="nav-number">3.</span> <span class="nav-text">client 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#clientWidth、clientHeight"><span class="nav-number">3.1.</span> <span class="nav-text">clientWidth、clientHeight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clientLeft、clientTop"><span class="nav-number">3.2.</span> <span class="nav-text">clientLeft、clientTop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scroll-相关"><span class="nav-number">4.</span> <span class="nav-text">scroll 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollWidth、scrollHeight"><span class="nav-number">4.1.</span> <span class="nav-text">scrollWidth、scrollHeight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollLeft、scrollTop"><span class="nav-number">4.2.</span> <span class="nav-text">scrollLeft、scrollTop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screen-page-X-Y-相关"><span class="nav-number">5.</span> <span class="nav-text">screen, page, X/Y 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#offsetX、offsetY"><span class="nav-number">5.1.</span> <span class="nav-text">offsetX、offsetY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clientX、clientY"><span class="nav-number">5.2.</span> <span class="nav-text">clientX、clientY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#screenX、screenY"><span class="nav-number">5.3.</span> <span class="nav-text">screenX、screenY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pageX、pageY"><span class="nav-number">5.4.</span> <span class="nav-text">pageX、pageY</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区别：style-top-和-offsetTop"><span class="nav-number">6.</span> <span class="nav-text">区别：style.top 和 offsetTop</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-砳鹿"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">尺子先生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
