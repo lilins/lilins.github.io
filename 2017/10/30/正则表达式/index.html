@@ -1,0 +1,773 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,RegExp," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="创建一个正则规则第一种是使用 / 符号把正则包裹起来 1var reg = /ab+c/g 第二种是使用 new 的方法 12new RegExp(&apos;ab+c&apos;,&apos;g&apos;);new RegExp(/ab+c/,&apos;g&apos;); 要注意的是，在新建一个正则的时候，还有 flags 可以选择：  g 全局匹配;找到所有匹配，而不是在第一个匹配后停止 i 忽略大小写 m 多行; 将开始和结束字符（^和$）视为在">
+<meta name="keywords" content="JavaScript,RegExp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达式">
+<meta property="og:url" content="https://lilins.github.io/2017/10/30/正则表达式/index.html">
+<meta property="og:site_name" content="巴山夜雨">
+<meta property="og:description" content="创建一个正则规则第一种是使用 / 符号把正则包裹起来 1var reg = /ab+c/g 第二种是使用 new 的方法 12new RegExp(&apos;ab+c&apos;,&apos;g&apos;);new RegExp(/ab+c/,&apos;g&apos;); 要注意的是，在新建一个正则的时候，还有 flags 可以选择：  g 全局匹配;找到所有匹配，而不是在第一个匹配后停止 i 忽略大小写 m 多行; 将开始和结束字符（^和$）视为在">
+<meta property="og:updated_time" content="2017-10-30T10:45:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正则表达式">
+<meta name="twitter:description" content="创建一个正则规则第一种是使用 / 符号把正则包裹起来 1var reg = /ab+c/g 第二种是使用 new 的方法 12new RegExp(&apos;ab+c&apos;,&apos;g&apos;);new RegExp(/ab+c/,&apos;g&apos;); 要注意的是，在新建一个正则的时候，还有 flags 可以选择：  g 全局匹配;找到所有匹配，而不是在第一个匹配后停止 i 忽略大小写 m 多行; 将开始和结束字符（^和$）视为在">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lilins.github.io/2017/10/30/正则表达式/"/>
+
+
+
+
+
+  <title>正则表达式 | 巴山夜雨</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">巴山夜雨</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lilins.github.io/2017/10/30/正则表达式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="尺子先生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巴山夜雨">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">正则表达式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T17:09:05+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建一个正则规则"><a href="#创建一个正则规则" class="headerlink" title="创建一个正则规则"></a>创建一个正则规则</h2><p>第一种是使用 <code>/</code> 符号把正则包裹起来</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reg = <span class="regexp">/ab+c/g</span></div></pre></td></tr></table></figure>
+<p>第二种是使用 <code>new</code> 的方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'ab+c'</span>,<span class="string">'g'</span>);</div><div class="line"><span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="regexp">/ab+c/</span>,<span class="string">'g'</span>);</div></pre></td></tr></table></figure>
+<p>要注意的是，在新建一个正则的时候，还有 <code>flags</code> 可以选择：</p>
+<ul>
+<li><code>g</code> 全局匹配;找到所有匹配，而不是在第一个匹配后停止</li>
+<li><code>i</code> 忽略大小写</li>
+<li><code>m</code> 多行; 将开始和结束字符（^和$）视为在多行上工作（也就是，分别匹配每一行的开始和结束（由 \n 或 \r 分割），而不只是只匹配整个输入字符串的最开始和最末尾处。</li>
+<li><code>u</code> Unicode; 将模式视为Unicode序列点的序列</li>
+<li><code>y</code> 粘性匹配; 仅匹配目标字符串中此正则表达式的lastIndex属性指示的索引(并且不尝试从任何后续的索引匹配)。</li>
+</ul>
+<h2 id="常用特殊字符"><a href="#常用特殊字符" class="headerlink" title="常用特殊字符"></a>常用特殊字符</h2><ul>
+<li><code>.</code> 匹配任意单个字符，只能匹配一个字符。</li>
+<li><code>\d</code> 匹配任意单个数字，等价于[0-9]等价。</li>
+<li><code>\D</code> 匹配任意单个非数字。等价于[^0-9]。</li>
+<li><code>\w</code> 匹配任意单个字母、数字、下划线。等价于 [A-Za-z0-9_]。</li>
+<li><code>\W</code> 匹配任意单个非字母、数字、下划线。等价于 [^A-Za-z0-9_]。</li>
+<li><code>\s</code> 匹配单个空白符，包括空格、制表符、换页符、换行符和其他 Unicode 空格</li>
+<li><code>\S</code> 匹配一个非空白符。</li>
+<li><code>^</code> 代表输入开始。如果在 <code>[]</code> 中出现，代表取补集。</li>
+<li><code>$</code> 代表输入结束。</li>
+<li><code>*</code> 代表前面的模式 0+ 次。</li>
+<li><code>+</code> 代表前面的模式 1+ 次。</li>
+<li><code>?</code> 代表前面的模式 0 或 1 次。</li>
+<li><code>x|y</code> 匹配 x 或 y。</li>
+<li><code>x{n,m}</code> 代表有 n~m 个 x，m 可省略。</li>
+</ul>
+<h2 id="括号的用法"><a href="#括号的用法" class="headerlink" title="括号的用法"></a>括号的用法</h2><h3 id="圆括号"><a href="#圆括号" class="headerlink" title="圆括号"></a>圆括号</h3><p><code>()</code> 是为了提取匹配的字符串，有字符匹配多少。</p>
+<h3 id="方括号"><a href="#方括号" class="headerlink" title="方括号"></a>方括号</h3><p><code>[]</code> 是为了匹配一个范围的字符串，例如 <code>/[0-9]/</code> 只匹配 0~9 中的一个数字。</p>
+<h3 id="花括号"><a href="#花括号" class="headerlink" title="花括号"></a>花括号</h3><p><code>{}</code> 表示匹配的数量。</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li><code>(0-9)</code> 匹配 <code>&#39;0-9&#39;</code> 字符串。</li>
+<li><code>[0-9]</code> 匹配 0~9 数字。</li>
+<li><code>{1-9}</code> 代表应该有 1 ~ 9 的数量，不可以单独使用。</li>
+</ul>
+<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><ul>
+<li><code>x(?=y)</code> 仅匹配被y跟随的x。举个例子，/Jack(?=Sprat)/，如果”Jack”后面跟着sprat，则匹配之。</li>
+<li><code>x(?!y)</code> 仅匹配不被y跟随的x。举个例子，/\d+(?!.)/ 只会匹配不被点（.）跟随的数字。</li>
+</ul>
+<h2 id="正则的-Function"><a href="#正则的-Function" class="headerlink" title="正则的 Function"></a>正则的 <code>Function</code></h2><h3 id="RegExp-prototype-exec"><a href="#RegExp-prototype-exec" class="headerlink" title="RegExp.prototype.exec()"></a><code>RegExp.prototype.exec()</code></h3><p>方法在一个指定字符串中执行一个搜索匹配。返回一个结果数组或  <code>null</code>。</p>
+<p>这里的数组结构为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	[ '匹配的全部字符串',</div><div class="line">	  '...括号中的分组捕获'</div><div class="line">	],</div><div class="line">	index: '匹配到的字符位于原始字符串的基于0的索引值',</div><div class="line">	input: '原始字符串'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/(a).?(c)/.exec(<span class="string">'abcddd'</span>)</div></pre></td></tr></table></figure>
+<p>得到结果：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	["abc","a","c"],</div><div class="line">	index: 0,</div><div class="line">	input: "abcddd"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="RegExp-prototype-test"><a href="#RegExp-prototype-test" class="headerlink" title="RegExp.prototype.test()"></a><code>RegExp.prototype.test()</code></h3><p>执行一个检索，用来查看正则表达式与指定的字符串是否匹配。返回 <code>true</code> 或 <code>false</code>。</p>
+<h3 id="String-prototype-search"><a href="#String-prototype-search" class="headerlink" title="String.prototype.search()"></a><code>String.prototype.search()</code></h3><p>执行正则表达式和 String对象之间的一个搜索匹配。返回正则表达式在字符串中首次匹配项的索引。否则，返回 <code>-1</code>。与 <code>RegExp.prototype.test()</code> 相似。</p>
+<h3 id="String-prototype-match"><a href="#String-prototype-match" class="headerlink" title="String.prototype.match()"></a><code>String.prototype.match()</code></h3><p>字符串的匹配，与 <code>RegExp.prototype.exec()</code> 相似，但是返回值根据不同的情况返回不同的值。</p>
+<ul>
+<li>没有 <code>g</code> 标志，返回结果与 <code>RegExp.prototype.exec()</code> 相同；</li>
+<li>有 <code>g</code> 标志，且匹配成功，返回一个 <code>Array</code>，它包含所有匹配的子字符串而不是匹配对象。</li>
+<li>有 <code>g</code> 标志，如果没有匹配到，则返回 <code>null</code>。</li>
+<li>不传入参数，返回空数组 <code>[]</code></li>
+<li>当参数是一个字符串或一个数字，它会使用new RegExp(obj)来隐式转换成一个 RegExp。如果它是一个有正号的正数，RegExp() 方法将忽略正号。</li>
+</ul>
+<h3 id="String-prototype-replace"><a href="#String-prototype-replace" class="headerlink" title="String.prototype.replace()"></a><code>String.prototype.replace()</code></h3><p>参数有 4 个，但不能同时使用：</p>
+<ul>
+<li><code>regexp</code>：正则，第一个匹配内容会被第二个参数的返回值替换掉。</li>
+<li><code>substr</code>：字符串，第一个匹配的字符串会被第二个参数替换。</li>
+<li><code>newSubStr</code>：字符串，该字符串中可以内插一些特殊的变量名。</li>
+<li><code>function</code>：函数，该函数的返回值将替换掉第一个参数匹配到的结果。</li>
+</ul>
+<p>也即只能填写两个参数：第一个参数，只能是要 <strong>被替换</strong> 的正则或是字符串；第二个参数是要 <strong>替换掉</strong> 的字符串或者函数。</p>
+<p>且要注意：如果没有 <code>g</code> 标志，则之替换第一个匹配到的内容。</p>
+<p><strong>这里详细讲一下 <code>function</code> 的用法</strong></p>
+<p><code>function</code> 接受的参数为：</p>
+<ul>
+<li><code>match</code>：匹配的子串</li>
+<li><code>p1,p2, ...</code>：代表第n个括号匹配的字符串。</li>
+<li><code>offset</code>：匹配到的子字符串在原字符串中的偏移量。</li>
+<li><code>string</code>：被匹配的原字符串。</li>
+</ul>
+<p>通过如下例子可以比较清晰地认识：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//声明替换函数</span></div><div class="line"><span class="keyword">var</span> replacer = <span class="function">(<span class="params">match, p1, p2, offset, string</span>) =&gt;</span> &#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">`-<span class="subst">$&#123;match&#125;</span>-<span class="subst">$&#123;p1&#125;</span>-<span class="subst">$&#123;p2&#125;</span>-<span class="subst">$&#123;offset&#125;</span>-<span class="subst">$&#123;string&#125;</span>-`</span></div><div class="line">&#125;</div><div class="line"><span class="string">'0abcddd'</span>.replace(<span class="regexp">/(a).?(c)/g</span>, replacer)</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"0-abc-a-c-1-0abcddd-ddd"</span></div></pre></td></tr></table></figure>
+<p><code>match</code> 指代匹配到的子串 <code>abc</code>；<code>p1,p2</code> 代表 <code>(a)</code>，<code>(c)</code>匹配到的子串，<code>offset</code> 代表偏移量 <code>1</code>, <code>string</code> 代表原字符串。返回值为新字符串，把匹配的 <code>abc</code> 替换成 <code>-abc-a-c-1-0abcddd-</code></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.mozilla.org" target="_blank" rel="external">MDN</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/RegExp/" rel="tag"># RegExp</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/30/鼠标拖拽的简单实现/" rel="next" title="鼠标拖拽的简单实现">
+                <i class="fa fa-chevron-left"></i> 鼠标拖拽的简单实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="尺子先生" />
+          <p class="site-author-name" itemprop="name">尺子先生</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lilins" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/lule0102" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个正则规则"><span class="nav-number">1.</span> <span class="nav-text">创建一个正则规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用特殊字符"><span class="nav-number">2.</span> <span class="nav-text">常用特殊字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#括号的用法"><span class="nav-number">3.</span> <span class="nav-text">括号的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#圆括号"><span class="nav-number">3.1.</span> <span class="nav-text">圆括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方括号"><span class="nav-number">3.2.</span> <span class="nav-text">方括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#花括号"><span class="nav-number">3.3.</span> <span class="nav-text">花括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区别"><span class="nav-number">3.4.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶用法"><span class="nav-number">4.</span> <span class="nav-text">进阶用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则的-Function"><span class="nav-number">5.</span> <span class="nav-text">正则的 Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RegExp-prototype-exec"><span class="nav-number">5.1.</span> <span class="nav-text">RegExp.prototype.exec()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RegExp-prototype-test"><span class="nav-number">5.2.</span> <span class="nav-text">RegExp.prototype.test()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-prototype-search"><span class="nav-number">5.3.</span> <span class="nav-text">String.prototype.search()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-prototype-match"><span class="nav-number">5.4.</span> <span class="nav-text">String.prototype.match()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-prototype-replace"><span class="nav-number">5.5.</span> <span class="nav-text">String.prototype.replace()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-砳鹿"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">尺子先生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
